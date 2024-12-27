@@ -1,5 +1,6 @@
 package com.compass.workshopmongo.resources;
 
+import com.compass.workshopmongo.domain.Post;
 import com.compass.workshopmongo.domain.User;
 import com.compass.workshopmongo.dto.UserDTO;
 import com.compass.workshopmongo.services.UserService;
@@ -31,9 +32,9 @@ public class UserResource implements Serializable {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-        User user = service.findById(id);
+        User obj = service.findById(id);
 
-        return ResponseEntity.ok().body(new UserDTO(user));
+        return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -57,5 +58,12 @@ public class UserResource implements Serializable {
         obj.setId(id);
         obj = service.update(obj);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User obj = service.findById(id);
+
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
